@@ -1,0 +1,11 @@
+Country1,Country2,Time,SentimentScore,Link
+AUS,GBR,12-Mar,0.4584, 
+AUS,GBR,12-Apr,0.7638, 
+AUS,GBR,12-Sep,0.6782, 
+AUS,GBR,Oct-12,0.9972, 
+AUS,GBR,Dec-12,0.1542, 
+GBR,AUS,12-Feb,0.5467, 
+GBR,AUS,12-Aug,0.3452, 
+GBR,AUS,12-Sep,0.7823,  
+GBR,AUS,12-Dec,0.6839,
+GBR,AUS,12-Dec,0.7123,
