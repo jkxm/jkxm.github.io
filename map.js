@@ -162,9 +162,9 @@
 			var hexString = val.toString(16);
 			var infodiv = d3.select(".information").append("div");
 			
-				infodiv.append("p").text(arr[0].name);
-				infodiv.append("p").text(arr[1].name);
-				infodiv.append("input").attr("type", "range").attr("min", 1).attr("max", data.length).attr("id", "slider");
+				infodiv.append("p").text(arr[0].name + " relationship status with " + arr[1].name);
+				//infodiv.append("p").text(arr[1].name);
+				infodiv.append("input").attr("type", "range").attr("min", 1).attr("max", data.length).attr("id", "slider").attr("class", "slider");
 				infodiv.append("p").text(data[data.length-1].SentimentScore).attr("class", "time_score"); // show the sentiment score
 				infodiv.append("p").text(data[data.length-1].Time).attr("class", "time_score");
 				infodiv.append("span").attr("id", "output");
