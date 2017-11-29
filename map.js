@@ -167,7 +167,7 @@
 			var infodiv = d3.select(".information").append("div");
 				infodiv.append("input").attr("type", "range").attr("min", 1).attr("max", data.length).attr("id", "slider").attr("class", "slider");
 				//infodiv.append("p").text(arr[0].fullname + " relationship status with " + arr[1].fullname);
-				infodiv.append("p").text("During " + data[data.length-1].Time + ", " + arr[0].fullname + " relation with " + arr[1].fullname + " has a score of " + data[data.length-1].SentimentScore)
+				infodiv.append("p").text("During " + data[data.length-1].Time + ", " + arr[0].fullname + " relation to " + arr[1].fullname + " has a score of " + data[data.length-1].SentimentScore)
 				//infodiv.append("p").text(arr[1].name);
 				infodiv.append("p").text(data[data.length-1].SentimentScore).attr("class", "time_score"); // show the sentiment score
 				infodiv.append("p").text(data[data.length-1].Time).attr("class", "time_score");
