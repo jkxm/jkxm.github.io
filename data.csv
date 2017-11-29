@@ -1,11 +1,11 @@
-Country1,Country2,Time,SentimentScore,Link
-AUS,GBR,12-Mar,0.4584, 
-AUS,GBR,12-Apr,0.7638, 
-AUS,GBR,12-Sep,0.6782, 
-AUS,GBR,Oct-12,0.9972, 
-AUS,GBR,Dec-12,0.1542, 
-GBR,AUS,12-Feb,0.5467, 
-GBR,AUS,12-Aug,0.3452, 
-GBR,AUS,12-Sep,0.7823,  
-GBR,AUS,12-Dec,0.6839,
-GBR,AUS,12-Dec,0.7123,
+Country1,Country2,Time,SentimentScore,Link,Images
+AUS,GBR,12-Mar,0.4584, https://en.wikipedia.org/wiki/Australia%E2%80%93United_Kingdom_relations,https://upload.wikimedia.org/wikipedia/commons/e/e2/Australian_Orion_MPA_Flying_Over_HMS_Echo_During_Search_for_Malaysian_Airliner_MH370_MOD_45157505.jpg
+AUS,GBR,12-Apr,0.7638,https://en.wikipedia.org/wiki/Australia%E2%80%93United_Kingdom_relations,https://upload.wikimedia.org/wikipedia/commons/2/2d/AUKMIN_press_conference_2015.jpg
+AUS,GBR,12-Sep,0.6782,https://en.wikipedia.org/wiki/Australia%E2%80%93United_Kingdom_relations,https://upload.wikimedia.org/wikipedia/commons/2/2d/AUKMIN_press_conference_2015.jpg
+AUS,GBR,12-Oct,0.9972,https://en.wikipedia.org/wiki/Australia%E2%80%93United_Kingdom_relations,https://upload.wikimedia.org/wikipedia/commons/2/2d/AUKMIN_press_conference_2015.jpg
+AUS,GBR,12-Dec,0.1542,https://en.wikipedia.org/wiki/Australia%E2%80%93United_Kingdom_relations,https://upload.wikimedia.org/wikipedia/commons/2/2d/AUKMIN_press_conference_2015.jpg
+GBR,AUS,12-Feb,0.5467,https://en.wikipedia.org/wiki/Australia%E2%80%93United_Kingdom_relations,https://upload.wikimedia.org/wikipedia/commons/2/2d/AUKMIN_press_conference_2015.jpg
+GBR,AUS,12-Aug,0.3452,https://en.wikipedia.org/wiki/Australia%E2%80%93United_Kingdom_relations,https://upload.wikimedia.org/wikipedia/commons/2/2d/AUKMIN_press_conference_2015.jpg
+GBR,AUS,12-Sep,0.7823,https://en.wikipedia.org/wiki/Australia%E2%80%93United_Kingdom_relations,https://upload.wikimedia.org/wikipedia/commons/2/2d/AUKMIN_press_conference_2015.jpg
+GBR,AUS,12-Dec,0.6839,https://en.wikipedia.org/wiki/Australia%E2%80%93United_Kingdom_relations,https://upload.wikimedia.org/wikipedia/commons/2/2d/AUKMIN_press_conference_2015.jpg
+GBR,AUS,12-Dec,0.7123,https://en.wikipedia.org/wiki/Australia%E2%80%93United_Kingdom_relations,https://upload.wikimedia.org/wikipedia/commons/2/2d/AUKMIN_press_conference_2015.jpg
