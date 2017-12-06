@@ -20,29 +20,65 @@
 			// console.log(csv_rows);
 
 (function(){
-	var margin = {top: 50, left: 50, right: 50, bottom: 50},
-	height = 720 - margin.top - margin.bottom,
-	width =  1280 - margin.left - margin.right;
-
-	var svg = d3.select("#container")
-		.append("svg")
-		//.attr("height", "100vh")//height + margin.top + margin.bottom)
-		//.attr("width", "100vw")//width + margin.left + margin.right)
-		.append("g");
-		//.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
+	// var margin = {top: 50, left: 50, right: 50, bottom: 50},
 	d3.queue()
-		.defer(d3.json, "world.topojson")
-		.await(ready);
+	.defer(d3.json, "world.topojson")
+	.await(ready);
 
 
+	height = 720;
+	width =  1280;
+	var scroll = 160;
 
 	var projection = d3.geoMercator()
 		//.translate([width/2 ,  height/2])
-		.scale(150);
+		.scale(scroll);
 	var path = d3.geoPath()
 		.projection(projection);
+
+	var svg = d3.select("#container")
+		.append("svg")
+		.call(d3.behavior.zoom()
+      	.translate(projection.translate())
+      	.scale(projection.scale())
+      	.on("zoom", redraw));;
+		// .append("g");
+		//.attr("height", "100vh")//height + margin.top + margin.bottom)
+		//.attr("width", "100vw")//width + margin.left + margin.right)
+		
+		//.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	var axes = svg.append("g").attr("id", "axes"),
+	    xAxis = axes.append("line").attr("y2", height),
+	    yAxis = axes.append("line").attr("x2", width);
+
+	d3.json("world.topojson", function(error, json) {
+		svg.selectAll("path")
+	    .data(json.features)
+	    .enter().append("path");
+	  	redraw();
+	});
+
+
+	function redraw() {
+
+		if (d3.event) {
+			projection
+		        .translate(d3.event.translate)
+		        .scale(d3.event.scale);
+		    // lines
+		    // 	.translate(d3.event.translate)
+		    //     .scale(d3.event.scale);
+		  }
+		d3.selectAll("line").remove();
+		d3.selectAll("circle").remove();
+		svg.selectAll("path").attr("d", path);
+		var t = projection.translate();
+		var s = projection.scale();
+		xAxis.attr("x1", t[0]).attr("x2", t[0]);
+		yAxis.attr("y1", t[1]).attr("y2", t[1]);
+		
+		console.log(t[0] + " " + t[1] + " " + s);
+	}
 
 	var selectedCountries = [];
 	var countryRelations = [];
@@ -138,16 +174,17 @@
 		
 	}
 
-
 	// var x = retrieveRelation("AUS", "GBR");
 	// console.log(data);
 
 	function drawLine(arr){ //add color to line
+
+
 		if(arr.length > 2 ){
 			//console.log("more than 3");
-			var x = arr[2];
-			selectedCountries = [];
-			data = [];
+			var x = selectedCountries[2];
+			selectedCountries.length = 0;
+			data.length = 0;
 			selectedCountries.push(x);
 			d3.selectAll("line").remove();
 			d3.selectAll("p").remove();
@@ -155,7 +192,6 @@
 			d3.selectAll("circle").remove();
 			d3.selectAll("img").remove();
 			d3.selectAll("a").remove();
-
 		}
 		else if(arr.length == 2){
 			retrieveRelation(arr[0].name, arr[1].name);
@@ -165,7 +201,7 @@
 			var val = Math.random();
 			var hexString = val.toString(16);
 			var infodiv = d3.select(".information").append("div");
-				infodiv.append("input").attr("type", "range").attr("min", 1).attr("max", data.length).attr("id", "slider").attr("class", "slider");
+				d3.selectAll("body").append("input").attr("type", "range").attr("min", 1).attr("max", data.length).attr("id", "slider").attr("class", "slider");
 				//infodiv.append("p").text(arr[0].fullname + " relationship status with " + arr[1].fullname);
 				infodiv.append("p").text("During " + data[data.length-1].Time + ", " + arr[0].fullname + " relation to " + arr[1].fullname + " has a score of " + data[data.length-1].SentimentScore)
 				//infodiv.append("p").text(arr[1].name);
@@ -184,53 +220,32 @@
 			var intersecty = arr[0].y + .95 * (arr[1].y - arr[0].y);
 			var intersectx = arr[0].x + .95 * (arr[1].x - arr[0].x);
 
-			d3.select("g").append("line")
+			d3.select("svg").append("line")
 				.style("stroke", col)
 				.attr("stroke-width", "3")
 				.attr("class", "relationLine")
 				.attr("x1", arr[0].x)
 				.attr("y1", arr[0].y)
 				.attr("x2", arr[1].x)
-				.attr("y2", arr[1].y);
-
-//arrow head lines here FIX SLOPE!!
-			// d3.select("g").append("line")
-			// 	.style("stroke", col)
-			// 	.attr("stroke-width", "3")
-			// 	.attr("class", "relationLine")
-			// 	.attr("x1", intersectx + xinverse)
-			// 	.attr("y1", intersecty + yinverse)
-			// 	.attr("x2", arr[1].x)
-			// 	.attr("y2", arr[1].y);
-
-			// d3.select("g").append("line")
-			// 	.style("stroke", col)
-			// 	.attr("stroke-width", "3")
-			// 	.attr("class", "relationLine")
-			// 	.attr("x1", intersectx - xinverse)
-			// 	.attr("y1", intersecty - yinverse)
-			// 	.attr("x2", arr[1].x)
-			// 	.attr("y2", arr[1].y);
+				.attr("y2", arr[1].y)
+				.style("stroke-dasharray", ("3, 3"));
 
 
-
-			d3.select("g").append("circle")
+			d3.select("svg").append("circle")
 				.attr("cx", intersectx )
 				.attr("cy", intersecty)
 				.attr("r", 5)
 				.style("fill", "black");
-			d3.select("g").append("circle") //left side
+			d3.select("svg").append("circle") //left side
 				.attr("cx", intersectx + .1 * xinverse)
 				.attr("cy", intersecty + .1 * yinverse)
 				.attr("r", 1)
 				.style("fill", "black"); //right side
-			d3.select("g").append("circle")
+			d3.select("svg").append("circle")
 				.attr("cx", intersectx - .1 * xinverse)
 				.attr("cy", intersecty - .1 * yinverse)
 				.attr("r", 1)
 				.style("fill", "black");
-
-
 
 
 
@@ -253,8 +268,8 @@
 				infodiv.append("span").attr("id", "output");
 				infodiv.append("img").attr("src", data[this.value-1].Images);
 				infodiv.append("a").attr("href", data[this.value - 1].Link).text("Link to wiki article").attr("target", "_blank");
-
-				d3.select("g").append("line")
+				//d3.select(".container").style("background-color", GreenYellowRed(data[this.value - 1].SentimentScore)).style("opacity", ".1");
+				d3.select("svg").append("line")
 					.style("stroke", GreenYellowRed(data[this.value - 1].SentimentScore))
 					.attr("stroke-width", "3")
 					.attr("class", "relationLine")
@@ -262,31 +277,10 @@
 					.attr("y1", arr[0].y)
 					.attr("x2", arr[1].x)
 					.attr("y2", arr[1].y);
-
-				// d3.select("g").append("line")
-				// 	.style("stroke", GreenYellowRed(data[this.value - 1].SentimentScore))
-				// 	.attr("stroke-width", "3")
-				// 	.attr("class", "relationLine")
-				// 	.attr("x1", intersectx + .1 * xinverse)
-				// 	.attr("y1", intersecty + .1 * yinverse)
-				// 	.attr("x2", arr[1].x)
-				// 	.attr("y2", arr[1].y);
-
-				// d3.select("g").append("line")
-				// 	.style("stroke", GreenYellowRed(data[this.value - 1].SentimentScore))
-				// 	.attr("stroke-width", "3")
-				// 	.attr("class", "relationLine")
-				// 	.attr("x1", intersectx - .1 * xinverse)
-				// 	.attr("y1", intersecty - .1 * yinverse)
-				// 	.attr("x2", arr[1].x)
-				// 	.attr("y2", arr[1].y);
-
-		    	//output.innerHTML = this.value;
-		    	// index = this.value -1;
 			}
-			//console.log(canvas_arrow(d3.select("svg"), arr[0].x, arr[0].y, arr[1].x,arr[1].y));
 
 		}
+		console.log(arr.length);
 	}
 
 	//loads map
@@ -304,14 +298,21 @@
 		var titles =  paths
 			.attr("class", "country")
 			.attr("d", path)
+			.on("mouseover", function(d){d3.select(this).classed("hovering", true);})
+			.on("mouseout", function(d){d3.select(this).classed("hovering",false);})
 			.on("click", function(d){ //push coordinates onto the selected countries
 				var pos = d3.mouse(this);
 				console.log(pos[0]+" "+pos[1]);
 				selectedCountries.push({name:d.id, x:pos[0], y:pos[1], fullname:d.properties.name});
+				if(selectedCountries.length > 2){
+					d3.selectAll(".country").classed("selected", false);
+				}
+				d3.select(this).classed("selected", true);
 				drawLine(selectedCountries);
 			})
-			.on("mouseover", function(d){d3.select(this).classed("hovering", true);})
-			.on("mouseout", function(d){d3.select(this).classed("hovering",false);})
+			
+			//.on("click", function(d){d3.select(this).classed("hovering", true);})
+			
 
 		titles.append("title").text(function(d){return d.properties.name;})
 
