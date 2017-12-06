@@ -47,9 +47,9 @@
 		//.attr("width", "100vw")//width + margin.left + margin.right)
 		
 		//.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-	var axes = svg.append("g").attr("id", "axes"),
-	    xAxis = axes.append("line").attr("y2", height),
-	    yAxis = axes.append("line").attr("x2", width);
+	// var axes = svg.append("g").attr("id", "axes"),
+	//     xAxis = axes.append("line").attr("y2", height),
+	//     yAxis = axes.append("line").attr("x2", width);
 
 	d3.json("world.topojson", function(error, json) {
 		svg.selectAll("path")
@@ -60,7 +60,6 @@
 
 
 	function redraw() {
-
 		if (d3.event) {
 			projection
 		        .translate(d3.event.translate)
@@ -84,23 +83,7 @@
 	var countryRelations = [];
 	var csv = [];	
 	var data = [];
-	/*function appendToSelected(){
-			selectedCountries.push({x:1 , y:1});
-			if (selectedCountries.length==2)
-			{
-				console.log("click!");
-				console.log("2 entries (" + selectedCountries[0].x +", " + selectedCountries[0].y + ") ("+ selectedCountries[1].x + "," + selectedCountries[1].y + ")");
-				console.log()
-				drawLine(selectedCountries);
-			}
-			else if(selectedCountries.length > 2)
-			{
-				svg.selectAll("line").remove();
-				selectedCountries = [];
-				//selectedCountries.push({x:d.lon, y:d.lat});
 
-			}
-		}*/
 
 	d3.csv("data.csv") //store csv into csv[]
 	.row(function(d) { return {
@@ -114,32 +97,6 @@
 	.get(function(error, rows) {
   		csv.push(rows);
   	});
-
-
-
-	// var country1_list = [];
-	// d3.csv("data.csv")
-	// .row(function(d){
-	// 	return d.Country1;
-	// })
-	// .get(function(error, rows){
-	// 	for (var i = 0; i < rows.length ; i++){
-	// 		country1_list.push(rows[i]);
-	// 	}
-	// });
-
-
-	// var country2_list = [];
-	// d3.csv("data.csv")
-	// .row(function(d){
-	// 	return d.Country2;
-	// })
-	// .get(function(error, rows){
-	// 	for (var i = 0; i < rows.length ; i++){
-	// 		country2_list.push(rows[i]);
-
-	// 	}
-	// });
 
 
 	function GreenYellowRed(score) {
