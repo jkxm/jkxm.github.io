@@ -38,20 +38,24 @@
 			/*float: left;*/
 		}
 		.information{
-			float: left;
+			float: right;
 			width: 30%;
+			overflow-y: auto;
 		}
 		.container{
 			width: 70%;
 			height: 90%;
 			float: left;
+			position: fixed;
 		}
 		.slider {
+			position: fixed;
+			bottom: 0;
 		    -webkit-appearance: none;
 		    margin: 0px;
 		    float: left;
 		    width: 70%;
-		    height: 10%;
+		    height: 5%;
 		    background: #d3d3d3;
 		    outline: none;
 		    opacity: 0.7;
@@ -90,9 +94,6 @@
 	<div id = "container" name="container" class="container">
 	</div>
 	<div class = "information">
-		<form method="get" action="persuasive.pptx">
-			<button type = "submit">Download PPT</button>
-		</form>
 	</div>
 	<script type ="text/javascript">
 

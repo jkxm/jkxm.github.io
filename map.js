@@ -73,8 +73,8 @@
 		svg.selectAll("path").attr("d", path);
 		var t = projection.translate();
 		var s = projection.scale();
-		xAxis.attr("x1", t[0]).attr("x2", t[0]);
-		yAxis.attr("y1", t[1]).attr("y2", t[1]);
+		// xAxis.attr("x1", t[0]).attr("x2", t[0]);
+		// yAxis.attr("y1", t[1]).attr("y2", t[1]);
 		
 		console.log(t[0] + " " + t[1] + " " + s);
 	}
@@ -90,16 +90,20 @@
 				 	Country1:d.Country1,
 				 	Country2:d.Country2,
 				 	Time:d.Time,
-				 	SentimentScore:d.SentimentScore,
+				 	SentimentScore:d.Score,
+				 	Magnitude:d.Magnitude,
+				 	Weight:d.Weight,
 				 	Link:d.Link,
-				 	Images:d.Images,
 				 }})
 	.get(function(error, rows) {
   		csv.push(rows);
   	});
+  	console.log(csv)
 
 
 	function GreenYellowRed(score) {
+	  if(score < 0)
+	  	score *= -1;
 	  score *= 100;
 	  score--; // working with 0-99 will be easier
 
@@ -120,10 +124,21 @@
 
 
 	function retrieveRelation(from, to){
-		console.log(csv);
+		// console.log(csv);
 		for (var i = 0 ; i < csv[0].length; i++) {
-			if(csv[0][i].Country1 == from && csv[0][i].Country2 == to){
-				data.push(csv[0][i]);
+			c2list = csv[0][i].Country2.split(';');
+			console.log(c2list);
+			if(csv[0][i].Country1 == from){
+				if(c2list.length == 1 && c2list[0] == to){
+					console.log("1 country in country2");
+					data.push(csv[0][i]);
+				}
+				else{
+					for(var n = 0; n < c2list.length -1; n++){
+						if(c2list[n] == to)
+							data.push(csv[0][i]);
+					}
+				}
 			}
 		}
 		console.log(data);
@@ -140,8 +155,8 @@
 		if(arr.length > 2 ){
 			//console.log("more than 3");
 			var x = selectedCountries[2];
-			selectedCountries.length = 0;
-			data.length = 0;
+			selectedCountries = [];
+			data = [];
 			selectedCountries.push(x);
 			d3.selectAll("line").remove();
 			d3.selectAll("p").remove();
@@ -151,8 +166,8 @@
 			d3.selectAll("a").remove();
 		}
 		else if(arr.length == 2){
-			retrieveRelation(arr[0].name, arr[1].name);
-			console.log(data[0].Images);
+			retrieveRelation(arr[0].name, arr[1].name); //adjust for multiple country2
+			console.log(data)
 			var index;
 			//console.log(arr[0].x+" "+arr[1].x);
 			var val = Math.random();
@@ -166,8 +181,8 @@
 				infodiv.append("p").text(data[data.length-1].Time).attr("class", "time_score");
 				
 				infodiv.append("span").attr("id", "output");
-				infodiv.append("img").attr("src", data[data.length-1].Images);
-				infodiv.append("a").attr("href", data[data.length-1].Link).text("Link to wiki article").attr("target", "_blank");
+				//infodiv.append("img").attr("src", data[data.length-1].Images);
+				infodiv.append("p").text(data[data.length-1].Link);
 			var col = GreenYellowRed(data[data.length-1].SentimentScore);
 			
 			var slope = -(arr[1].y - arr[0].y)/(arr[1].x - arr[0].x);
@@ -223,8 +238,7 @@
 				infodiv.append("p").text(data[this.value - 1].Time).attr("class", "time_score");
 				
 				infodiv.append("span").attr("id", "output");
-				infodiv.append("img").attr("src", data[this.value-1].Images);
-				infodiv.append("a").attr("href", data[this.value - 1].Link).text("Link to wiki article").attr("target", "_blank");
+				infodiv.append("p").text(data[this.value - 1].Link);
 				//d3.select(".container").style("background-color", GreenYellowRed(data[this.value - 1].SentimentScore)).style("opacity", ".1");
 				d3.select("svg").append("line")
 					.style("stroke", GreenYellowRed(data[this.value - 1].SentimentScore))
@@ -260,7 +274,8 @@
 			.on("click", function(d){ //push coordinates onto the selected countries
 				var pos = d3.mouse(this);
 				console.log(pos[0]+" "+pos[1]);
-				selectedCountries.push({name:d.id, x:pos[0], y:pos[1], fullname:d.properties.name});
+				selectedCountries.push({name:d.properties.name, x:pos[0], y:pos[1], fullname:d.properties.name});
+				console.log(d.properties.name)
 				if(selectedCountries.length > 2){
 					d3.selectAll(".country").classed("selected", false);
 				}
