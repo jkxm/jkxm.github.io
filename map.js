@@ -125,10 +125,10 @@
 
 	function retrieveRelation(from, to){
 		// console.log(csv);
-		for (var i = 0 ; i < csv[0].length; i++) {
+		for (var i = 0 ; i < csv[0].length -1; i++) {
 			c2list = csv[0][i].Country2.split(';');
-			console.log(c2list);
 			if(csv[0][i].Country1 == from){
+				console.log("hit country1")
 				if(c2list.length == 1 && c2list[0] == to){
 					console.log("1 country in country2");
 					data.push(csv[0][i]);
@@ -136,6 +136,7 @@
 				else{
 					for(var n = 0; n < c2list.length -1; n++){
 						if(c2list[n] == to)
+							console.log("else statement hit a match country2");
 							data.push(csv[0][i]);
 					}
 				}
@@ -177,8 +178,16 @@
 				//infodiv.append("p").text(arr[0].fullname + " relationship status with " + arr[1].fullname);
 				infodiv.append("p").text("During " + data[data.length-1].Time + ", " + arr[0].fullname + " relation to " + arr[1].fullname + " has a score of " + data[data.length-1].SentimentScore)
 				//infodiv.append("p").text(arr[1].name);
-				infodiv.append("p").text(data[data.length-1].SentimentScore).attr("class", "time_score"); // show the sentiment score
-				infodiv.append("p").text(data[data.length-1].Time).attr("class", "time_score");
+				if(data[data.length-1].Magnitude.length !== 1 || data[data.length-1].Magnitude.length !== 0){
+					console.log("mag" + data[data.length-1].Magnitude + " " + data[data.length-1].Magnitude.length)
+					infodiv.append("p").text("Magnitude for the score is " + data[data.length- 1].Magnitude);
+				}
+				if(data[data.length-1].Weight !== '' || data[data.length-1].Weight !== ' '){
+					console.log("weight" + data[data.length-1].Weight  + " " + data[data.length-1].Weight.length)
+					infodiv.append("p").text("Country salience on article is " + data[data.length - 1].Weight);
+				}
+				// infodiv.append("p").text(data[data.length-1].SentimentScore).attr("class", "time_score"); // show the sentiment score
+				// infodiv.append("p").text(data[data.length-1].Time).attr("class", "time_score");
 				
 				infodiv.append("span").attr("id", "output");
 				//infodiv.append("img").attr("src", data[data.length-1].Images);
@@ -234,8 +243,16 @@
 
 				infodiv.append("p").text("During " + data[this.value - 1].Time + ", " + arr[0].fullname + " relation with " + arr[1].fullname + " has a score of " +data[this.value - 1].SentimentScore)
 				//infodiv.append("p").text(arr[1].name);
-				infodiv.append("p").text(data[this.value - 1].SentimentScore).attr("class", "time_score"); // show the sentiment score
-				infodiv.append("p").text(data[this.value - 1].Time).attr("class", "time_score");
+				if(data[this.value-1].Magnitude != '' || data[this.value-1].Magnitude != ' '){
+					console.log("mag" + data[this.value-1].Magnitude)
+					infodiv.append("p").text("Magnitude for the score is " + data[this.value - 1].Magnitude);
+				}
+				if(data[this.value-1].Weight != '' || data[this.value-1].Weight != ' '){
+					console.log("weight" + data[this.value-1].Weight)
+					infodiv.append("p").text("Country salience on article is " + data[this.value - 1].Weight);
+				}
+				// infodiv.append("p").text(data[this.value - 1].SentimentScore).attr("class", "time_score"); // show the sentiment score
+				// infodiv.append("p").text(data[this.value - 1].Time).attr("class", "time_score");
 				
 				infodiv.append("span").attr("id", "output");
 				infodiv.append("p").text(data[this.value - 1].Link);
